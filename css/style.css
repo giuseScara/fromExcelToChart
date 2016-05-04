@@ -1,0 +1,38 @@
+html, body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+#examples {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+    box-sizing: border-box;
+    padding: 10px;
+}
+#examples button {
+    width: 100%;
+    margin-bottom: 10px;
+}
+#results {
+    position: absolute;
+    top: 0;
+    left: 200px;
+    display: block;
+    box-sizing: border-box;
+    width: calc(100% - 200px);
+    margin: 0 auto;
+    height: calc(100% - 200px);
+}
+body > footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 20px;
+}
+si-importer {
+    margin: auto;
+}

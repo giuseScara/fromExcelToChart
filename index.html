@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>Spreadit Demo</title>
+      <link href="css/lib/spreadit.css" type="text/css" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+  </head>
+  <body ng-app="demo" ng-controller="DemoCtrl as vm">
+    <textarea id="results"></textarea>
+  <footer>
+      <si-importer si-id="free"></si-importer>
+  </footer>
+    
+    <si-column-manager 
+      si-id="sampleSize" 
+      si-change="vm.onChange($data, $file)" 
+      si-sample-size="5">
+    </si-column-manager>
+    
+    <si-column-manager 
+      si-id="free" 
+      si-change="vm.onChange($data, $file)">
+    </si-column-manager>
+    
+    <si-column-manager 
+      si-id="headers"
+      si-change="vm.onChange($data, $file)"
+      si-columns="vm.columns">
+    </si-column-manager>
+    
+    <si-column-manager si-id="excludeUnknown"
+      si-change="vm.onChange($data, $file)"
+      si-columns="vm.columns"
+      si-exclude-unknown-columns="true">
+    </si-column-manager>
+    
+    <script src="js/lib/lodash.min.js"></script>
+    <script src="js/lib//angular.min.js"></script>
+    <script src="js/lib/xlsx.full.min.js"></script>
+    <script src="js/lib/papaparse.min.js"></script>
+    <script src="js/lib/spreadit.min.js"></script>
+    <script data-main="config.js" src="js/lib/require.js"></script>
+    <script src="js/app.js"></script>
+
+  </body>
+</html>
