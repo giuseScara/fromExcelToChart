@@ -17,8 +17,10 @@
     "tests"
   ],
   "dependencies": {
-    "spreadit": "^1.0.2",
-    "angular": "angularjs#^1.5.5",
-    "requirejs": "^2.2.0"
+    "spreadit": "latest",
+    "angular": "latest",
+    "requirejs": "latest",
+    "bootstrap": "latest",
+    "require-css": "^0.1.8"
   }
 }

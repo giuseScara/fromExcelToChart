@@ -24,12 +24,12 @@
                 allowRenaming: '=?siAllowRenaming',
                 // TODO: add support for these flags
                 unknownColumnsGroupName: '=?siUnknownColumnsGroupName',
-                groupUnknownColumns: '=?siGroupUnknownColumns'
+                groupUnknownColumns: '=?siGroupUnknownColumns',
+                postProcessors: '=?siPostProcessors'
             },
             controller: ['$scope', '$element', '$attrs', controller],
             controllerAs: 'vm',
-            templateUrl: '/columnManager.html',
-            link: link
+            templateUrl: '/columnManager.html'
         };
 
         function controller($scope, $element, $attrs) {
@@ -37,6 +37,7 @@
             _.defaults($scope, {
                 id: "",
                 columns: [],
+                postProcessors: [],
                 sampleSize: 3,
                 excludeUnknownColumns: false,
                 allowCustomRenaming: true,
@@ -82,9 +83,9 @@
             var presult;
             var $file;
 
-            $scope.$watch('hasHeader', function() {
+            $scope.$watch('hasHeader', function () {
 
-                if($file && self.active) {
+                if ($file && self.active) {
                     parseFile($file);
                 }
             });
@@ -104,8 +105,8 @@
             function isHeader(values) {
 
                 var isIt = $scope.hasHeader || values.some(function (value) {
-                    return titles.indexOf(String(value).trim().toLowerCase()) !== -1;
-                });
+                        return titles.indexOf(String(value).trim().toLowerCase()) !== -1;
+                    });
                 $scope.hasHeader = isIt;
                 return isIt;
             }
@@ -121,17 +122,40 @@
                 }
 
                 var reader = new FileReader();
-                reader.onload = function (e) {
-                    var content = e.target.result;
-                    if (supports.xls && isExcel(content)) {
-                        preparseExcel(content);
-                    } else if (supports.csv) {
-                        preparseCSV(file);
-                    }
-                };
 
-                reader.readAsBinaryString(file);
+                if (reader.readAsBinaryString) {
+
+                    reader.onload = function (e) {
+                        preparse(file, e.target.result);
+                    };
+
+                    reader.readAsBinaryString(file);
+                } else {
+
+                    reader.onload = function (e) {
+
+                        /* convert data to binary string */
+                        var data = new Uint8Array(e.target.result);
+                        var buffer = [];
+                        var i;
+                        for (i = 0; i < data.length; i++) {
+                            buffer[i] = String.fromCharCode(data[i]);
+                        }
+                        preparse(file, buffer.join(''));
+                    };
+                    reader.readAsArrayBuffer(file)
+                }
             }
+
+            function preparse(file, content) {
+
+                if (supports.xls && isExcel(content)) {
+                    preparseExcel(content);
+                } else if (supports.csv) {
+                    preparseCSV(file);
+                }
+            }
+
 
             function preparseExcel(content) {
 
@@ -265,10 +289,11 @@
                     return result;
                 });
 
+
                 $scope.callback({
                     $type: 'excel',
                     $file: $file,
-                    $data: data
+                    $data: postProcess(data)
                 });
             }
 
@@ -295,8 +320,8 @@
                         });
                         $scope.callback({
                             $type: 'csv',
-                            $data: data,
-                            $file: $file
+                            $file: $file,
+                            $data: postProcess(data)
                         });
                     }
                 });
@@ -399,10 +424,21 @@
                     $element.addClass('active');
                 }
             });
-        }
 
-        function link($scope, $element, $attrs, controller) {
+            function postProcess(data) {
 
+                if(!$scope.postProcessors.length) {
+                    return data;
+                }
+
+                return data.map(function(obj) {
+
+                    $scope.postProcessors.forEach(function(fn) {
+                        fn(obj);
+                    });
+                    return obj;
+                })
+            }
         }
     }
 

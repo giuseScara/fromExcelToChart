@@ -34,14 +34,14 @@
     "papaparse": "^4.1.2",
     "lodash": "^4.11.2"
   },
-  "version": "1.0.1",
-  "_release": "1.0.1",
+  "version": "1.0.4",
+  "_release": "1.0.4",
   "_resolution": {
     "type": "version",
-    "tag": "1.0.1",
-    "commit": "f791925d7f20353a8406aca6eb3e29d7c21c411c"
+    "tag": "1.0.4",
+    "commit": "a063403a2674175d6e4150452d348242d4637182"
   },
   "_source": "https://github.com/blakgeek/spreadit.git",
-  "_target": "1.0.1",
+  "_target": "*",
   "_originalSource": "spreadit"
 }
