@@ -7,13 +7,16 @@ require.config({
   },
   shim: {
     app: {
-      deps: ['angular','css!style/style','bootstrap','spreadit']
+      deps: ['angular','css!style/style','bootstrap','spreadit','d3.layout.cloud']
     },
     spreadit: {
       deps: ['lodash','angular','xlsx','papaparse','css!style/lib/spreadit']
     },
     bootstrap: {
       deps: ['jquery','css!style/lib/bootstrap.min']
+    },
+    'd3.layout.cloud' : { // not native require
+      deps: ['d3']
     }
   },
   paths: {
@@ -44,6 +47,13 @@ require.config({
     jquery: [
       'https://code.jquery.com/jquery-2.2.3.min',
       'lib/jquery.min'
+    ],
+    d3: [
+      'https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min',
+      'lib/d3.min'
+    ],
+    'd3.layout.cloud': [
+      'lib/d3.layout.cloud'
     ]
   } 
 });
